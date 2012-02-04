@@ -97,8 +97,11 @@ class DeviceManager(object):
                 
                 for prop in obj:
                     cmd = cmd.replace("{%s}" % prop, obj[prop])
+                
+                cmd = cmd.split("\n")
+                for c in cmd:
+                    os.system(c)
 
-                os.system(cmd)
             else:
                 print "Device did not match:", dev['name']
 
