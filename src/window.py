@@ -12,6 +12,8 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowIcon(QIcon.fromTheme("drive-removable-media"))
+
         self.setupSignals()
         self.synchronize_pages()
 
