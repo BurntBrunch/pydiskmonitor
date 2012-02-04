@@ -15,9 +15,6 @@ class Application(object):
         self.initApp()
         self.initUi()
 
-        # TEST
-        self.tray_activated(QSystemTrayIcon.DoubleClick)
-
         sys.exit(self.app.exec_())
     
     def initApp(self):
@@ -27,6 +24,7 @@ class Application(object):
 
         self.dev_manager = DeviceManager()
         self.udisks_manager = UDisksManager(self.dev_manager)
+        self.window = None
 
     def initUi(self):
         self.tray_icon = QSystemTrayIcon(self.app)
@@ -35,12 +33,20 @@ class Application(object):
         self.tray_icon.activated.connect(self.tray_activated)
         self.tray_icon.setVisible(True)
 
+        self.tray_menu = QMenu()
+        self.tray_menu.addAction("&Show manager").triggered.connect(lambda:
+                                                                    self.tray_activated(QSystemTrayIcon.DoubleClick))
+
+        self.tray_menu.addAction("&Quit").triggered.connect(self.app.quit)
+        self.tray_icon.setContextMenu(self.tray_menu)
+
     def tray_activated(self, reason):
-        if reason == QSystemTrayIcon.Context:
-            self.app.quit()
-        elif reason == QSystemTrayIcon.DoubleClick:
-            self.window = MainWindow(self.dev_manager)
-            self.window.show()
+        if reason == QSystemTrayIcon.Trigger:
+            if self.window is not None and self.window.isVisible():
+                self.window.hide()
+            else:
+                self.window = MainWindow(self.dev_manager)
+                self.window.show()
 
 if __name__ == "__main__":
     app = Application()
