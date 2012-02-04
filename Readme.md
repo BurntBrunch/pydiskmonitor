@@ -9,3 +9,7 @@ any line, it matches that rule and the whole ruleset.
 
 The valid rule keys are `fs_label`, `fs_uuid`, `mount_path`, `model`, `vendor`,
 and `dev_file`. 
+
+* Requirements *
+
+Requires: PyQt4, dbus-python, pyparsing
